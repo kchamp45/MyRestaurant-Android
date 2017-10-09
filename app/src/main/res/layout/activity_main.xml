@@ -9,10 +9,9 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/background"
-        android:scaleType="centerCrop"
-        tools:layout_height="match_parent" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/appNameTextView"
@@ -23,9 +22,8 @@
         android:layout_marginTop="35dp"
         android:text="MyRestaurant"
         android:textColor="@color/colorTextIcons"
-        android:textSize="80sp"
-        android:textStyle="bold"
-        tools:textSize="40sp" />
+        android:textSize="40sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/locationEditText"
@@ -35,17 +33,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:ems="10"
-        android:hint="Enter Zip Code"
+        android:hint="@string/zip_code_hint"
         android:padding="5dp"
-        tools:background="@color/colorTextIcons" />
+        android:background="@color/colorTextIcons" />
 
     <Button
         android:id="@+id/findRestaurantButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:text="Find Restaurant"
         android:textColor="@color/colorTextIcons"
-        tools:background="@color/colorAccent" />
+        android:background="@color/colorAccent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp" />
 </RelativeLayout>
