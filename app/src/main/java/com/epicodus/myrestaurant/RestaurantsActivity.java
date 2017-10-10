@@ -22,6 +22,7 @@ public class RestaurantsActivity extends AppCompatActivity {
             "Lardo", "Portland City Grill", "Fat Head's Brewery",
             "Chipotle", "Subway"};
 
+    private String[] cuisines = new String[] {"Vegan Food", "Breakfast", "Fishs Dishs", "Scandinavian", "Coffee", "English Food", "Burgers", "Fast Food", "Noodle Soups", "Mexican", "BBQ", "Cuban", "Bar Food", "Sports Bar", "Breakfast", "Mexican" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +30,7 @@ public class RestaurantsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, restaurants);
+        MyRestaurantsArrayAdapter adapter = new MyRestaurantsArrayAdapter(this, android.R.layout.simple_list_item_1, restaurants, cuisines);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -39,8 +40,9 @@ public class RestaurantsActivity extends AppCompatActivity {
                 Toast.makeText(RestaurantsActivity.this, restaurant, Toast.LENGTH_LONG).show();
             }
         });
-        Intent intent = getIntent();
-        String location = intent.getStringExtra("location");
-        mLocationTextView.setText("Here are all the restaurants near: " + location);
+
+        Intent intentPassedFromMainActivityOverCyberSpace = getIntent();
+        String locationPassedFromPreviousActivity = intentPassedFromMainActivityOverCyberSpace.getStringExtra("homies");
+        mLocationTextView.setText("Here are all the restaurants near: " + locationPassedFromPreviousActivity);
     }
 }

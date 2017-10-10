@@ -22,18 +22,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         Typeface ostrichFont = Typeface.createFromAsset(getAssets(), "fonts/ostrich-regular.ttf");
         mAppNameTextView.setTypeface(ostrichFont);
 
         mFindRestaurantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String location = mLocationEditText.getText().toString();
-                Intent intent = new Intent(MainActivity.this, RestaurantsActivity.class);
-                intent.putExtra("location", location);
-                startActivity(intent);
+                String userLocation = mLocationEditText.getText().toString();
+                Intent ourIntent = new Intent(MainActivity.this, RestaurantsActivity.class);
+                ourIntent.putExtra("homies", userLocation);
+                startActivity(ourIntent);
             }
-
         });
     }
 }
