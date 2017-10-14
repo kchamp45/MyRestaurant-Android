@@ -4,6 +4,9 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     useLibrary 'org.apache.http.legacy'
+    buildTypes.each {
+        it.buildConfigField 'String', 'YELP_TOKEN', YelpToken
+    }
 
     repositories {
         mavenCentral()
