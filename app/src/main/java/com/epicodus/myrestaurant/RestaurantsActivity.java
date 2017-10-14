@@ -3,6 +3,7 @@ package com.epicodus.myrestaurant;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,8 +11,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class RestaurantsActivity extends AppCompatActivity {
     @Bind(R.id.locationTextView) TextView mLocationTextView;
@@ -23,6 +29,8 @@ public class RestaurantsActivity extends AppCompatActivity {
             "Chipotle", "Subway"};
 
     private String[] cuisines = new String[] {"Vegan Food", "Breakfast", "Fishs Dishs", "Scandinavian", "Coffee", "English Food", "Burgers", "Fast Food", "Noodle Soups", "Mexican", "BBQ", "Cuban", "Bar Food", "Sports Bar", "Breakfast", "Mexican" };
+    public static final String TAG = RestaurantsActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +50,30 @@ public class RestaurantsActivity extends AppCompatActivity {
         });
 
         Intent intentPassedFromMainActivityOverCyberSpace = getIntent();
-        String locationPassedFromPreviousActivity = intentPassedFromMainActivityOverCyberSpace.getStringExtra("homies");
+        String locationPassedFromPreviousActivity = intentPassedFromMainActivityOverCyberSpace.getStringExtra("location");
         mLocationTextView.setText("Here are all the restaurants near: " + locationPassedFromPreviousActivity);
+
+        getRestaurants(locationPassedFromPreviousActivity);
+    }
+    private void getRestaurants(String location){
+        final YelpService yelpService = new YelpService();
+        yelpService.findRestaurants(location, new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String jsonData = response.body().string();
+                    Log.v(TAG, jsonData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
+
