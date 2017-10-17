@@ -2,10 +2,9 @@ package com.epicodus.myrestaurant.models;
 
 import java.util.ArrayList;
 
-/**
- * Created by kimlu on 10/14/17.
- */
+import org.parceler.Parcel;
 
+@Parcel
 public class Restaurant {private String name;
     private String phone;
     private String website;
