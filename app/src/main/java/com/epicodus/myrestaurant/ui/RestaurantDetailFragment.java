@@ -1,5 +1,7 @@
 package com.epicodus.myrestaurant.ui;
 
+        import android.content.Intent;
+        import android.net.Uri;
         import android.os.Bundle;
         import android.support.v4.app.Fragment;
         import android.view.LayoutInflater;
@@ -7,9 +9,13 @@ package com.epicodus.myrestaurant.ui;
         import android.view.ViewGroup;
         import android.widget.ImageView;
         import android.widget.TextView;
+        import android.widget.Toast;
 
+        import com.epicodus.myrestaurant.Constants;
         import com.epicodus.myrestaurant.R;
         import com.epicodus.myrestaurant.models.Restaurant;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
         import com.squareup.picasso.Picasso;
 
         import org.parceler.Parcels;
@@ -17,7 +23,7 @@ package com.epicodus.myrestaurant.ui;
         import butterknife.Bind;
         import butterknife.ButterKnife;
 
-public class RestaurantDetailFragment extends Fragment {
+public class RestaurantDetailFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.restaurantImageView) ImageView mImageLabel;
     @Bind(R.id.restaurantNameTextView) TextView mNameLabel;
     @Bind(R.id.cuisineTextView) TextView mCategoriesLabel;
@@ -56,6 +62,40 @@ public class RestaurantDetailFragment extends Fragment {
         mPhoneLabel.setText(mRestaurant.getPhone());
         mAddressLabel.setText(android.text.TextUtils.join(", ", mRestaurant.getAddress()));
 
+        mWebsiteLabel.setOnClickListener(this);
+        mPhoneLabel.setOnClickListener(this);
+        mAddressLabel.setOnClickListener(this);
+
+        mSaveRestaurantButton.setOnClickListener(this);
+
         return view;
     }
+    @Override
+    public void onClick(View v) {
+        if (v == mWebsiteLabel) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(mRestaurant.getWebsite()));
+            startActivity(webIntent);
+        }
+        if (v == mPhoneLabel) {
+            Intent phoneIntent = new Intent(Intent.ACTION_DIAL,
+                    Uri.parse("tel:" + mRestaurant.getPhone()));
+            startActivity(phoneIntent);
+        }
+        if (v == mAddressLabel) {
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("geo:" + mRestaurant.getLatitude()
+                            + "," + mRestaurant.getLongitude()
+                            + "?q=(" + mRestaurant.getName() + ")"));
+            startActivity(mapIntent);
+        }
+        if (v == mSaveRestaurantButton) {
+            DatabaseReference restaurantRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference(Constants.FIREBASE_CHILD_RESTAURANTS);
+            restaurantRef.push().setValue(mRestaurant);
+            Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
