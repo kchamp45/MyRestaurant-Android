@@ -16,6 +16,7 @@ public class Restaurant {private String name;
     private double longitude;
     private List<String> categories = new ArrayList<>();
     private String pushId;
+    String index;
 
     public Restaurant(){}
 
@@ -31,6 +32,7 @@ public class Restaurant {private String name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.categories = categories;
+        this.index = "Not_specified";
     }
 
     public String getName() {
@@ -75,5 +77,13 @@ public class Restaurant {private String name;
 
     public void setPushId(String pushId) {
         this.pushId = pushId;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 }
