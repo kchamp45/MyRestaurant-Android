@@ -2,12 +2,17 @@ package com.epicodus.myrestaurant.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.epicodus.myrestaurant.R;
 import com.epicodus.myrestaurant.models.Restaurant;
 import com.epicodus.myrestaurant.ui.RestaurantDetailActivity;
+import com.epicodus.myrestaurant.ui.RestaurantDetailFragment;
 import com.epicodus.myrestaurant.util.ItemTouchHelperAdapter;
 import com.epicodus.myrestaurant.util.OnStartDragListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -26,6 +31,7 @@ import java.util.Collections;
 public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Restaurant, FirebaseRestaurantViewHolder> implements ItemTouchHelperAdapter {
     private ChildEventListener mChildEventListener;
     private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
+    private int mOrientation;
 
     private DatabaseReference mRef;
        private Context mContext;
@@ -71,6 +77,10 @@ public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Resta
     @Override
     protected void populateViewHolder(final FirebaseRestaurantViewHolder viewHolder, Restaurant model, int position) {
         viewHolder.bindRestaurant(model);
+        mOrientation = viewHolder.itemView.getResources().getConfiguration().orientation;
+        if (mOrientation == Configuration.ORIENTATION_LANDSCAPE){
+            createDetailFragment(0);
+        }
         viewHolder.mRestaurantImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -90,6 +100,13 @@ public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Resta
                 mContext.startActivity(intent);
             }
         });
+    }
+
+    private void createDetailFragment(int position) {
+        RestaurantDetailFragment detailFragment = RestaurantDetailFragment.newInstance(mRestaurants, position);
+        FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.restaurantDetailContainer, detailFragment);
+        ft.commit();
     }
 
     @Override
